@@ -1,5 +1,6 @@
 package com.example.waterremainder.walkThrough
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,7 @@ import com.example.waterremainder.R
 import com.example.waterremainder.adapter.PageOnBoardingAdapter
 import com.example.waterremainder.databinding.ActivityMainWalkThroughBinding
 import com.example.waterremainder.model.OnBoardingData
+import com.example.waterremainder.ui.UserInfoActivity
 
 class MainWalkThrough : AppCompatActivity(), View.OnClickListener {
 
@@ -43,7 +45,6 @@ class MainWalkThrough : AppCompatActivity(), View.OnClickListener {
                     } else {
                         binding.btnNext.text = "Next"
                     }
-
                 }
             })
         }
@@ -54,7 +55,6 @@ class MainWalkThrough : AppCompatActivity(), View.OnClickListener {
             offscreenPageLimit =2
             getChildAt(0).overScrollMode = View.OVER_SCROLL_NEVER
         }
-
     }
 
     private fun getListData() {
@@ -93,8 +93,8 @@ class MainWalkThrough : AppCompatActivity(), View.OnClickListener {
             R.id.btnNext ->{
                 val currentPosition = binding.viewPager2.currentItem
                 if(currentPosition == list.size - 1){
-                    Toast.makeText(this,"Now Start Our App", Toast.LENGTH_SHORT).show()
-                    return
+                    startActivity(Intent(this@MainWalkThrough, UserInfoActivity::class.java))
+                    finish()
                 }
                 binding.viewPager2.setCurrentItem(currentPosition+1,true)
                 binding.viewPager2.adapter!!.notifyDataSetChanged()
@@ -111,8 +111,8 @@ class MainWalkThrough : AppCompatActivity(), View.OnClickListener {
             }
 
             R.id.tvSkip ->{
-                Toast.makeText(this,"Now Start Our App", Toast.LENGTH_SHORT).show()
-
+                startActivity(Intent(this@MainWalkThrough, UserInfoActivity::class.java))
+                finish()
             }
 
         }
