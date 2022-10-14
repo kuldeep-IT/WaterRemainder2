@@ -14,22 +14,32 @@
         android:theme="@style/Theme.WaterRemainder"
         tools:targetApi="31">
         <activity
-            android:name=".walkThrough.WalkThroughActivity"
-            android:exported="true"
-            android:theme="@style/Theme.WaterRemainder.FullScreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:name=".walkThrough.MainWalkThrough"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".walkThrough.WalkThroughActivity"
+            android:exported="true"
+            android:theme="@style/Theme.WaterRemainder.FullScreen">
+       <!--     <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+           <!-- <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
         </activity>
     </application>
 

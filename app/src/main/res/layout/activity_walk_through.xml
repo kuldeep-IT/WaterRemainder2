@@ -17,7 +17,7 @@
             android:id="@+id/animation_view"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:layout_marginTop="150dp"
+            android:layout_marginTop="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,36 +26,36 @@
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/water1" />
 
-        <com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator
-            android:id="@+id/dots_indicator"
-            android:layout_width="wrap_content"
+
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            app:dotsColor="@color/gray"
-            app:dotsCornerRadius="8dp"
-            app:dotsSize="16dp"
-            app:dotsSpacing="4dp"
-            app:dotsWidthFactor="2.5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDescription"
-            app:progressMode="true"
-            app:selectedDotColor="@color/black" />
-
+            android:text="fasgg  gfsdgfsd"
+            android:fontFamily="@font/montserrat_extrabold"
+            android:layout_marginHorizontal="18dp"
+            android:maxLines="1"
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            app:layout_constraintTop_toBottomOf="@+id/animation_view"
+            tools:layout_editor_absoluteX="-16dp" />
 
         <TextView
             android:id="@+id/tvDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="12dp"
+            android:textSize="18sp"
+
             android:text="fasgg  gfsdgfsd"
-            android:fontFamily=""
+            android:fontFamily="@font/montserrat_semibold"
             android:layout_marginHorizontal="18dp"
-            android:maxLines="3"
-            app:layout_constraintTop_toBottomOf="@+id/animation_view"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle"
             tools:layout_editor_absoluteX="-16dp" />
 
-        <LinearLayout
+   <!--     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
@@ -63,6 +63,7 @@
             android:layout_marginBottom="32dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
+            android:padding="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -73,10 +74,13 @@
                 android:layout_weight="1"
                 android:gravity="start">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="hello" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/montserrat_semibold"
+                    android:text="Skip" />
             </LinearLayout>
 
 
@@ -89,14 +93,19 @@
             >
 
             <Button
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hello" />
+                android:text="Next"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/montserrat_semibold"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="4dp"
+                android:background="@drawable/btn_round_corner"/>
 
         </LinearLayout>
 
-        </LinearLayout>
+        </LinearLayout>-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
