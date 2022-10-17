@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">WaterRemainder</string>
+    <string name="workout_hint">Daily work out time in min/day</string>
+    <string name="wakeup_time">Select Wake-up time</string>
+    <string name="sleep_time">Select Sleep time</string>
+    <string name="str_sleep_time">Sleep time</string>
+    <string name="str_wake_up">Wake-up time</string>
+    <string name="str_pls_enter_name">Please Enter Your Full Name</string>
+    <string name="str_pls_enter_weight">Please Enter Your Weight</string>
+    <string name="str_pls_enter_work_out">Please Enter Work-out Time</string>
+    <string name="str_pls_slct_wake_up">Please Select Wake-up Time</string>
+    <string name="str_pls_slct_sleep">Please Select Sleep Time</string>
+    <string name="str_enter_weight">Enter your weight in KG</string>
+    <string name="str_weight">Your weight</string>
 </resources>

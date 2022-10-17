@@ -12,4 +12,7 @@
     <color name="gray">#C6C8C8</color>
     <color name="light_blue">#82CAFF</color>
     <color name="red">#F44336</color>
+    <color name="blue_bg">#CCEFFF</color>
+    <color name="snackbar_success_color">#43C86F</color>
+    <color name="snackbar_error_color">#D30E15</color>
 </resources>
