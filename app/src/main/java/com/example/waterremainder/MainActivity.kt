@@ -1,16 +1,20 @@
 package com.example.waterremainder
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.example.waterremainder.ui.UserInfoActivity
+import androidx.lifecycle.asLiveData
 import com.example.waterremainder.utils.DataStoreManager
 import com.example.waterremainder.utils.Keys.FIRST_RUN
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
+import com.example.waterremainder.utils.PreferenceKeys
+import com.example.waterremainder.walkThrough.MainWalkThrough
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var sharedEditor: SharedPreferences.Editor
 
     lateinit var dataStoreManager: DataStoreManager
     var isFirstRun: Boolean = false
@@ -19,21 +23,27 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+        sharedPreferences = getPreferences(Context.MODE_PRIVATE)
+        sharedEditor = sharedPreferences.edit()
         /* dataStoreManager = rember(this)  { DataStoreManager(this) }*/
         dataStoreManager = DataStoreManager(applicationContext)
 
-        lifecycleScope.launch {
-
-            if (dataStoreManager.getDataStoreBoolean(FIRST_RUN).toString() == "null" || dataStoreManager.getDataStoreBoolean(FIRST_RUN) == null || dataStoreManager.getDataStoreBoolean(FIRST_RUN) ||
-                    dataStoreManager.getDataStoreBoolean(FIRST_RUN).toString().isNullOrBlank() ||   dataStoreManager.getDataStoreBoolean(FIRST_RUN).toString().isNullOrEmpty()
-                    ) {
-
-                    startActivity(Intent(this@MainActivity, UserInfoActivity::class.java))
-
-
-            }
+        if (isItFirstRun()) {
+            startActivity(Intent(this@MainActivity, MainWalkThrough::class.java))
+            finish()
         }
-
-
     }
+
+    fun isItFirstRun(): Boolean {
+        if(sharedPreferences.getBoolean("isFirstRun", true)){
+            sharedEditor.putBoolean("isFirstRun", false)
+            sharedEditor.commit()
+            sharedEditor.apply()
+            return true
+        } else {
+            return false
+        }
+    }
+
 }
