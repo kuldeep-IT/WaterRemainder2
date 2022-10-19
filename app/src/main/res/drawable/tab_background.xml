@@ -1,0 +1,3 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android" android:enterFadeDuration="0" android:exitFadeDuration="1500">
+    <item android:state_pressed="true" android:state_selected="false" android:drawable="@drawable/unit_category_tab_ripple"/>
+</selector>
