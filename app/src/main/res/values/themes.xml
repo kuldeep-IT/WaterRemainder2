@@ -13,14 +13,13 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
-    
+
     <style name="Theme.WaterRemainder.FullScreen" parent="Theme.WaterRemainder">
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowActionBarOverlay">@null</item>
     </style>
-
 
 
     <style name="ErrorText" parent="TextAppearance.AppCompat">
@@ -39,5 +38,11 @@
         <item name="errorTextAppearance">@style/ErrorText</item>
         <item name="android:background">@drawable/textinput_bg</item>
     </style>
-    
+
+    //tabbar layout
+    <style name="tabBarStyle" parent="Theme.AppCompat">
+        <item name="android:textSize">12sp</item>
+        <item name="android:color">@color/black</item>
+    </style>
+
 </resources>

@@ -1,5 +1,5 @@
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="#D584D5">
+    android:color="#03A9F4">
     <item>
         <shape
             android:shape="rectangle">
@@ -8,7 +8,7 @@
                 android:radius="50dp"/>
             <!-- color of the selected tab -->
             <solid android:color="@android:color/transparent"/>
-            <stroke android:width="1dp" android:color="@color/purple_500"/>
+            <stroke android:width="1dp" android:color="#2196F3"/>
         </shape>
     </item>
 </ripple>
