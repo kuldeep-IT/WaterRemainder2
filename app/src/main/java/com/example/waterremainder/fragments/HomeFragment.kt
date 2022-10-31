@@ -1,18 +1,26 @@
 package com.example.waterremainder.fragments
 
-import android.content.Intent
+import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import com.example.waterremainder.R
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.waterremainder.R
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.waterremainder.adapter.DialogBottleAdapter
 import com.example.waterremainder.databinding.FragmentHomeBinding
+import com.example.waterremainder.model.BottleSizeData
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,7 +36,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     lateinit var binding: FragmentHomeBinding
     private var mInterstitialAd: InterstitialAd? = null
-
+    private lateinit var bottleAdapter: DialogBottleAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +54,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         loadInterAd()
 
         binding.ivbAds.setOnClickListener(this)
+        binding.ivGlass.setOnClickListener(this)
 
         return binding.root
     }
@@ -109,7 +118,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 override fun onAdLoaded(interstitialAd: InterstitialAd) {
                     Log.d("AD_ERROR", "onAdLoaded")
                     mInterstitialAd = interstitialAd
-                    Log.d("AD_ERROR_mInterstitialAd", "mInterstitialAd: "+mInterstitialAd)
+                    Log.d("AD_ERROR_mInterstitialAd", "mInterstitialAd: " + mInterstitialAd)
                 }
 
             })
@@ -151,9 +160,13 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
             mInterstitialAd?.show(requireActivity())
         } else {
-            Log.d("AD_ERROR_mInterstitialAd_else", "mInterstitialAd: "+mInterstitialAd)
+            Log.d("AD_ERROR_mInterstitialAd_else", "mInterstitialAd: " + mInterstitialAd)
 
-            Toast.makeText(requireActivity(), "It is not ready right now. Please click again", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireActivity(),
+                "It is not ready right now. Please click again",
+                Toast.LENGTH_SHORT
+            ).show()
             loadInterAd()
         }
     }
@@ -162,9 +175,51 @@ class HomeFragment : Fragment(), View.OnClickListener {
         when (v?.id) {
             R.id.ivbAds -> {
                 showInterAd()
-                Toast.makeText(requireActivity(),"clicked", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireActivity(), "clicked", Toast.LENGTH_SHORT).show()
+            }
+
+            R.id.ivGlass -> {
+                showListOfGlass()
+                Toast.makeText(requireActivity(), "clicked", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun showListOfGlass() {
+
+        val bottleList = arrayListOf<BottleSizeData>(
+            BottleSizeData(50, R.drawable.ic_water_glass),
+            BottleSizeData(100, R.drawable.ic_coffee_cup),
+            BottleSizeData(150, R.drawable.ic_tea),
+            BottleSizeData(200, R.drawable.ic_cola),
+            BottleSizeData(250, R.drawable.ic_juice)
+        )
+
+
+        bottleAdapter = DialogBottleAdapter(requireActivity(), bottleList)
+
+        val context: Context = ContextThemeWrapper(requireActivity(),R.style.AppTheme2)
+
+        val view = layoutInflater.inflate(R.layout.dialog_box_layout, null)
+
+
+        val dialog = MaterialAlertDialogBuilder(context)
+        dialog.setTitle("Choose Glass")
+
+        var rv = view.findViewById<RecyclerView>(R.id.recyclerView)
+        rv.apply {
+            layoutManager = GridLayoutManager(view.context,2)
+            adapter = bottleAdapter
+        }
+        dialog.setView(view)
+
+        /*(dialog as? AlertDialog)?.findViewById<RecyclerView>(R.id.recyclerView)?.apply {
+            layoutManager = GridLayoutManager(requireActivity(),2)
+            adapter = bottleAdapter
+        }*/
+
+        dialog.show()
+
     }
 
 

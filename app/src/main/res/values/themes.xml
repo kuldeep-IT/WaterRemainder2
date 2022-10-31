@@ -45,4 +45,11 @@
         <item name="android:color">@color/black</item>
     </style>
 
+    <style name="AppTheme2" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/light_blue</item>
+        <item name="colorPrimaryDark">@color/blue_bg</item>
+        <item name="colorAccent">@color/gray_bg</item>
+    </style>
+
 </resources>

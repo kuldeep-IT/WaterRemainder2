@@ -19,7 +19,6 @@ RecyclerView.Adapter<DialogBottleAdapter.DialogBottleVH>(){
             binding.ivBottle.setImageDrawable(ContextCompat.getDrawable(context, bottelSizeData.imageBottle))
             binding.tvSize.text = bottelSizeData.size.toString()
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DialogBottleVH {
