@@ -13,12 +13,6 @@ import com.example.waterremainder.MainActivity
 import com.example.waterremainder.R
 import com.example.waterremainder.databinding.ActivityUserInfoBinding
 import com.example.waterremainder.utils.DataStoreManager
-import com.example.waterremainder.utils.Keys.FIRST_RUN
-import com.example.waterremainder.utils.Keys.SLEEP_TIME
-import com.example.waterremainder.utils.Keys.USER_NAME
-import com.example.waterremainder.utils.Keys.WAKE_UP_TIME
-import com.example.waterremainder.utils.Keys.WEIGHT_DATA
-import com.example.waterremainder.utils.Keys.WORK_OUT
 import com.example.waterremainder.utils.PreferenceKeys
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.*

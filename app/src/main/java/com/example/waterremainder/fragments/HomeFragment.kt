@@ -1,25 +1,33 @@
 package com.example.waterremainder.fragments
 
-import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import com.example.waterremainder.R
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.waterremainder.R
 import com.example.waterremainder.adapter.DialogBottleAdapter
 import com.example.waterremainder.databinding.FragmentHomeBinding
 import com.example.waterremainder.model.BottleSizeData
+import com.example.waterremainder.utils.DataStoreManager
+import com.example.waterremainder.utils.PreferenceKeys.GLASS_SIZE
+import com.example.waterremainder.utils.PreferenceKeys.TAKEN_WATER_VALUE
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -37,11 +45,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
     lateinit var binding: FragmentHomeBinding
     private var mInterstitialAd: InterstitialAd? = null
     private lateinit var bottleAdapter: DialogBottleAdapter
+    lateinit var dataStoreManager: DataStoreManager
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    var takenWater = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,15 +55,30 @@ class HomeFragment : Fragment(), View.OnClickListener {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        dataStoreManager = DataStoreManager(requireActivity())
+
+        dataStoreManager.readIntegerFromDataStore(TAKEN_WATER_VALUE).asLiveData()
+            .observe(requireActivity(), {
+
+                if (it == -1){
+                    takenWater = 0
+                } else{
+                    takenWater = it
+                }
+
+            })
+
+        binding.tvTakenDrink.setText(takenWater.toString())
 
         loadBannerAd()
         loadInterAd()
 
         binding.ivbAds.setOnClickListener(this)
         binding.ivGlass.setOnClickListener(this)
-
+        binding.addFab.setOnClickListener(this)
         return binding.root
     }
+
 
     fun loadBannerAd() {
         MobileAds.initialize(requireActivity()) {}
@@ -68,35 +89,35 @@ class HomeFragment : Fragment(), View.OnClickListener {
         binding.adView.adListener = object : AdListener() {
             override fun onAdClicked() {
                 // Code to be executed when the user clicks on an ad.
-                Toast.makeText(requireActivity(), "Ad clicked!!", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(requireActivity(), "Ad clicked!!", Toast.LENGTH_SHORT).show()
             }
 
             override fun onAdClosed() {
                 // Code to be executed when the user is about to return
                 // to the app after tapping on an ad.
-                Toast.makeText(requireActivity(), "onAdClosed!!", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(requireActivity(), "onAdClosed!!", Toast.LENGTH_SHORT).show()
             }
 
             override fun onAdFailedToLoad(adError: LoadAdError) {
                 // Code to be executed when an ad request fails.
-                Toast.makeText(requireActivity(), "onAdFailedToLoad!!", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(requireActivity(), "onAdFailedToLoad!!", Toast.LENGTH_SHORT).show()
             }
 
             override fun onAdImpression() {
                 // Code to be executed when an impression is recorded
                 // for an ad.
-                Toast.makeText(requireActivity(), "onAdImpression!!", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(requireActivity(), "onAdImpression!!", Toast.LENGTH_SHORT).show()
             }
 
             override fun onAdLoaded() {
                 // Code to be executed when an ad finishes loading.
-                Toast.makeText(requireActivity(), "onAdLoaded!!", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(requireActivity(), "onAdLoaded!!", Toast.LENGTH_SHORT).show()
             }
 
             override fun onAdOpened() {
                 // Code to be executed when an ad opens an overlay that
                 // covers the screen.
-                Toast.makeText(requireActivity(), "onAdOpened!!", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(requireActivity(), "onAdOpened!!", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -122,6 +143,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 }
 
             })
+    }
+
+    override fun getLifecycle(): Lifecycle {
+        return super.getLifecycle()
     }
 
     fun showInterAd() {
@@ -175,12 +200,28 @@ class HomeFragment : Fragment(), View.OnClickListener {
         when (v?.id) {
             R.id.ivbAds -> {
                 showInterAd()
-                Toast.makeText(requireActivity(), "clicked", Toast.LENGTH_SHORT).show()
             }
 
             R.id.ivGlass -> {
                 showListOfGlass()
-                Toast.makeText(requireActivity(), "clicked", Toast.LENGTH_SHORT).show()
+            }
+
+            R.id.add_fab -> {
+                var glassSizeValue = 0
+                dataStoreManager.readIntegerFromDataStore(GLASS_SIZE).asLiveData()
+                    .observe(requireActivity(), {
+                        if(it == -1){
+                            glassSizeValue = 50
+                        }else {
+                            glassSizeValue = it
+                        }
+                    })
+
+                takenWater = takenWater + glassSizeValue
+                binding.tvTakenDrink.setText(takenWater.toString())
+                CoroutineScope(Dispatchers.IO).launch {
+                    dataStoreManager.saveIntToDataStore(TAKEN_WATER_VALUE, takenWater)
+                }
             }
         }
     }
@@ -198,30 +239,92 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         bottleAdapter = DialogBottleAdapter(requireActivity(), bottleList)
 
-        val context: Context = ContextThemeWrapper(requireActivity(),R.style.AppTheme2)
+        val context: Context = ContextThemeWrapper(requireActivity(), R.style.AppTheme2)
 
         val view = layoutInflater.inflate(R.layout.dialog_box_layout, null)
 
-
-        val dialog = MaterialAlertDialogBuilder(context)
-        dialog.setTitle("Choose Glass")
+        var dialog: androidx.appcompat.app.AlertDialog
+        val dialogBuilder = MaterialAlertDialogBuilder(context)
+        dialogBuilder.setTitle("Choose Glass")
 
         var rv = view.findViewById<RecyclerView>(R.id.recyclerView)
         rv.apply {
-            layoutManager = GridLayoutManager(view.context,2)
+            layoutManager = GridLayoutManager(view.context, 2)
             adapter = bottleAdapter
         }
-        dialog.setView(view)
+        dialogBuilder.setView(view)
 
-        /*(dialog as? AlertDialog)?.findViewById<RecyclerView>(R.id.recyclerView)?.apply {
-            layoutManager = GridLayoutManager(requireActivity(),2)
-            adapter = bottleAdapter
-        }*/
+        dialog = dialogBuilder.show()
+
+        bottleAdapter.onItemClicked = object : DialogBottleAdapter.onClickListener {
+            override fun onClick(bottleSizeData: BottleSizeData) {
+                Toast.makeText(
+                    view.context,
+                    bottleSizeData.size.toString() + " Clickkeeeeeed",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    dataStoreManager.saveIntToDataStore(GLASS_SIZE, bottleSizeData.size)
+//                   dataStoreManager.saveIntToDataStore(GLASS_IMG, bottleSizeData.imageBottle)
+                }
+                Log.d("LIFECYCL_E_BEFORE", lifecycle.toString())
+                dialog.dismiss()
+                Log.d("LIFECYCL_E_AFTER", lifecycle.toString())
+
+            }
+        }
 
         dialog.show()
-
     }
 
+    private fun showUpdatedGlass() {
+
+        var glassSizeValue = 0
+        dataStoreManager.readIntegerFromDataStore(GLASS_SIZE).asLiveData()
+            .observe(requireActivity(), {
+                glassSizeValue = it
+            })
+
+        when (glassSizeValue) {
+            50 -> binding.ivGlass.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireActivity(),
+                    R.drawable.ic_water_glass
+                )
+            )
+            100 -> binding.ivGlass.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireActivity(),
+                    R.drawable.ic_coffee_cup
+                )
+            )
+            150 -> binding.ivGlass.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireActivity(),
+                    R.drawable.ic_tea
+                )
+            )
+            200 -> binding.ivGlass.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireActivity(),
+                    R.drawable.ic_cola
+                )
+            )
+            250 -> binding.ivGlass.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireActivity(),
+                    R.drawable.ic_juice
+                )
+            )
+            else -> binding.ivGlass.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireActivity(),
+                    R.drawable.water
+                )
+            )
+        }
+    }
 
     companion object {
         /**

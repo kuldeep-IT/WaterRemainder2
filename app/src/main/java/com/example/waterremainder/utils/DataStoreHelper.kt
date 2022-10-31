@@ -26,6 +26,9 @@ import androidx.datastore.preferences.preferencesDataStore
         val SLEEP_TIME = longPreferencesKey("SLEEP_TIME")
         val WEIGHT_DATA = intPreferencesKey("WEIGHT_DATA")
         val FIRST_RUN = booleanPreferencesKey("FIRST_RUN")
+        val GLASS_SIZE = intPreferencesKey("GLASS_SIZE")
+        val GLASS_IMG = intPreferencesKey("GLASS_IMG")
+        val TAKEN_WATER_VALUE = intPreferencesKey("TAKEN_WATER_VALUE")
 
     }
 

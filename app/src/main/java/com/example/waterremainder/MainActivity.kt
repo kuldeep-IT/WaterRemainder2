@@ -16,7 +16,6 @@ import com.example.waterremainder.fragments.HistoryFragment
 import com.example.waterremainder.fragments.HomeFragment
 import com.example.waterremainder.fragments.SettingsFragment
 import com.example.waterremainder.utils.DataStoreManager
-import com.example.waterremainder.utils.Keys.FIRST_RUN
 import com.example.waterremainder.utils.PreferenceKeys
 import com.example.waterremainder.walkThrough.MainWalkThrough
 import com.google.android.material.tabs.TabLayoutMediator
@@ -38,16 +37,14 @@ class MainActivity : AppCompatActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-
-
         sharedPreferences = getPreferences(Context.MODE_PRIVATE)
         sharedEditor = sharedPreferences.edit()
         dataStoreManager = DataStoreManager(applicationContext)
 
-        if (isItFirstRun()) {
+      /*  if (isItFirstRun()) {
             startActivity(Intent(this@MainActivity, MainWalkThrough::class.java))
             finish()
-        }
+        }*/
 
         setTabPagerAdapter()
     }
