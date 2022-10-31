@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorSecondary">#1845E6</color>
+    <color name="colorSecondaryDark">#4167B2</color>
+    <color name="colorSecondaryLight">#6A91DE</color>
     <color name="purple_200">#66BB86FC</color>
     <color name="gray_bg">#66DCDCDC</color>
     <color name="purple_500">#9C85BD</color>
@@ -7,6 +10,8 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
+    <color name="medium_black">#B3000000</color>
+    <color name="light_black">#80000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="water_end">#A7D0EA</color>
     <color name="water_start">#E3FAFF</color>

@@ -9,9 +9,6 @@ import com.example.waterremainder.model.OnBoardingData
 
 class PageOnBoardingAdapter(var list: ArrayList<OnBoardingData>) : RecyclerView.Adapter<PageOnBoardingAdapter.OnBoardingViewHolder>(){
 
-    var dataList = ArrayList<OnBoardingData>()
-
-
      class OnBoardingViewHolder(private val binding: ActivityWalkThroughBinding)
         : RecyclerView.ViewHolder(binding.root){
 

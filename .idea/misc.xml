@@ -6,7 +6,14 @@
         <entry key="..\:/AjjuBhai/WaterIt/app/src/main/res/drawable/bg_gradient.xml" value="0.1415" />
         <entry key="..\:/AjjuBhai/WaterIt/app/src/main/res/drawable/btn_full_round_bg.xml" value="0.1415" />
         <entry key="..\:/AjjuBhai/WaterIt/app/src/main/res/drawable/btn_round_corner.xml" value="0.1415" />
+        <entry key="..\:/AjjuBhai/WaterIt/app/src/main/res/drawable/ic_add.xml" value="0.1" />
+        <entry key="..\:/AjjuBhai/WaterIt/app/src/main/res/drawable/ic_coffee_cup.xml" value="0.1" />
+        <entry key="..\:/AjjuBhai/WaterIt/app/src/main/res/drawable/ic_cola.xml" value="0.1" />
+        <entry key="..\:/AjjuBhai/WaterIt/app/src/main/res/drawable/ic_juice.xml" value="0.1" />
         <entry key="..\:/AjjuBhai/WaterIt/app/src/main/res/drawable/ic_left.xml" value="0.1415" />
+        <entry key="..\:/AjjuBhai/WaterIt/app/src/main/res/drawable/ic_milk.xml" value="0.1" />
+        <entry key="..\:/AjjuBhai/WaterIt/app/src/main/res/drawable/ic_tea.xml" value="0.1" />
+        <entry key="..\:/AjjuBhai/WaterIt/app/src/main/res/drawable/ic_water_glass.xml" value="0.1" />
         <entry key="..\:/AjjuBhai/WaterIt/app/src/main/res/drawable/tab_background.xml" value="0.155" />
         <entry key="..\:/AjjuBhai/WaterIt/app/src/main/res/drawable/tab_indicator.xml" value="0.155" />
         <entry key="..\:/AjjuBhai/WaterIt/app/src/main/res/drawable/tab_indicator_bg.xml" value="0.155" />
@@ -18,8 +25,9 @@
         <entry key="..\:/AjjuBhai/WaterIt/app/src/main/res/layout/activity_user_info.xml" value="0.2421875" />
         <entry key="..\:/AjjuBhai/WaterIt/app/src/main/res/layout/activity_walk_through.xml" value="0.23743589743589744" />
         <entry key="..\:/AjjuBhai/WaterIt/app/src/main/res/layout/fragment_history.xml" value="0.24114583333333334" />
-        <entry key="..\:/AjjuBhai/WaterIt/app/src/main/res/layout/fragment_home.xml" value="0.264" />
+        <entry key="..\:/AjjuBhai/WaterIt/app/src/main/res/layout/fragment_home.xml" value="0.152" />
         <entry key="..\:/AjjuBhai/WaterIt/app/src/main/res/layout/fragment_settings.xml" value="0.24114583333333334" />
+        <entry key="..\:/AjjuBhai/WaterIt/app/src/main/res/layout/layout_water_bottles.xml" value="0.19011406844106463" />
         <entry key="..\:/SDK_NEW/platforms/android-32/data/res/layout/auto_complete_list.xml" value="0.24114583333333334" />
       </map>
     </option>
