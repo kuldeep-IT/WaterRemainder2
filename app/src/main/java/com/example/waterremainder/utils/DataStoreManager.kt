@@ -135,7 +135,7 @@ class DataStoreManager(val context: Context) {
                 } else throw ex
             }
             .map { preferences ->
-                val isChecked = preferences[key] ?: 0
+                val isChecked = preferences[key] ?: 0L
                 isChecked
             }
     }
@@ -159,7 +159,7 @@ class DataStoreManager(val context: Context) {
         }
     }
 
-    suspend fun saveBooleanToDataStore(key: Preferences.Key<Boolean>, isChecked: Boolean) {
+    suspend fun saveBooleanToDataStore(key: Preferences.Key<Boolean>, isChecked: Boolean = false) {
         context.myDataStore.edit { preferences ->
             preferences[key] = isChecked
         }
@@ -171,7 +171,7 @@ class DataStoreManager(val context: Context) {
         }
     }
 
-    suspend fun saveLongToDataStore(key: Preferences.Key<Long>, long: Long) {
+    suspend fun saveLongToDataStore(key: Preferences.Key<Long>, long: Long = 0L) {
         context.myDataStore.edit { preferences ->
             preferences[key] = long
         }

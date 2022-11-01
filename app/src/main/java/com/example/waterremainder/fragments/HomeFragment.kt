@@ -19,13 +19,13 @@ import com.example.waterremainder.MainActivity
 import com.example.waterremainder.R
 import com.example.waterremainder.adapter.DialogBottleAdapter
 import com.example.waterremainder.databinding.FragmentHomeBinding
-import com.example.waterremainder.db.WaterDB
 import com.example.waterremainder.model.BottleSizeData
 import com.example.waterremainder.model.WaterData
-import com.example.waterremainder.repositories.WaterRepo
 import com.example.waterremainder.utils.DataStoreManager
+import com.example.waterremainder.utils.PreferenceKeys.CURRENT_TIME_STAMP
 import com.example.waterremainder.utils.PreferenceKeys.GLASS_SIZE
 import com.example.waterremainder.utils.PreferenceKeys.TAKEN_WATER_VALUE
+import com.example.waterremainder.utils.Utils
 import com.example.waterremainder.viewmodel.WaterViewModel
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
@@ -55,6 +55,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
     lateinit var viewModel: WaterViewModel
     var takenWater = 0
 
+    var refreshDaily = ""
+    var todayChecking = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -65,18 +68,44 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         viewModel = (activity as MainActivity).vm
 
-        dataStoreManager.readIntegerFromDataStore(TAKEN_WATER_VALUE).asLiveData()
-            .observe(requireActivity(), {
+        refreshDaily = Utils.currentDate()
+        Log.d("refreshDaily", "onCreateView: " + refreshDaily)
 
-                if (it == -1){
+        dataStoreManager.readLongFromDataStore(CURRENT_TIME_STAMP).asLiveData()
+            .observe(requireActivity()) { it ->
+                if (it == 0L) {
+                    //first time check..today's date
+                    CoroutineScope(Dispatchers.IO).launch {
+                        dataStoreManager.saveLongToDataStore(
+                            CURRENT_TIME_STAMP,
+                            System.currentTimeMillis()
+                        )
+                    }
                     takenWater = 0
-                } else{
-                    takenWater = it
+                    binding.tvTakenDrink.setText(takenWater.toString())
+                } else {
+                    if (Utils.convertDate(System.currentTimeMillis()) != Utils.convertDate(it)) {
+                        takenWater = 0
+                        binding.tvTakenDrink.setText(takenWater.toString())
+                    } else {
+                        dataStoreManager.readIntegerFromDataStore(TAKEN_WATER_VALUE).asLiveData()
+                            .observe(requireActivity(), {
+
+                                if (it == -1) {
+                                    takenWater = 0
+                                } else {
+                                    takenWater = it
+                                }
+                            })
+
+                        binding.tvTakenDrink.setText(takenWater.toString())
+                    }
                 }
+            }
 
-            })
 
-        binding.tvTakenDrink.setText(takenWater.toString())
+
+
 
         loadBannerAd()
         loadInterAd()
@@ -84,6 +113,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
         binding.ivbAds.setOnClickListener(this)
         binding.ivGlass.setOnClickListener(this)
         binding.addFab.setOnClickListener(this)
+
+
+
         return binding.root
     }
 
@@ -149,7 +181,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
                     mInterstitialAd = interstitialAd
                     Log.d("AD_ERROR_mInterstitialAd", "mInterstitialAd: " + mInterstitialAd)
                 }
-
             })
     }
 
@@ -218,9 +249,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 var glassSizeValue = 0
                 dataStoreManager.readIntegerFromDataStore(GLASS_SIZE).asLiveData()
                     .observe(requireActivity(), {
-                        if(it == -1){
+                        if (it == -1) {
                             glassSizeValue = 50
-                        }else {
+                        } else {
                             glassSizeValue = it
                         }
                     })
@@ -230,16 +261,16 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 var waterData = WaterData(
                     id = System.currentTimeMillis(),
                     glassSize = glassSizeValue,
-                    time = System.currentTimeMillis(),
+                    time = Utils.convertTime(System.currentTimeMillis()),
                     takenWater = takenWater
                 )
 
                 viewModel.addWater(waterData)
 //                Log.d("GET_STORED_DATA", viewModel.getAllWater.toString() )
 
-                viewModel.getAllWater.observe(requireActivity(), Observer{ list ->
+                viewModel.getAllWater.observe(requireActivity(), Observer { list ->
                     list.let {
-                        Log.d("GET_STORED_DATA", it.toString() )
+                        Log.d("GET_STORED_DATA", it.toString())
                     }
                 })
 

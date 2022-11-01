@@ -12,7 +12,7 @@ data class WaterData(
 
     var glassSize : Int?,
 
-    var time: Long?,
+    var time: String?,
 
     var takenWater : Int?
 ):Serializable

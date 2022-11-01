@@ -14,11 +14,6 @@ import androidx.datastore.preferences.preferencesDataStore
     )
 
     object PreferenceKeys {
-       /* val MY_STRING = stringPreferencesKey("my_string")
-        val MY_BOOLEAN = booleanPreferencesKey("my_boolean")
-        val MY_INT = intPreferencesKey("my_int")
-        val MY_LONG = longPreferencesKey("my_long")
-        val MY_FLOAT = floatPreferencesKey("my_float")*/
 
         val USER_NAME = stringPreferencesKey("USER_NAME")
         val WORK_OUT = intPreferencesKey("WORK_OUT")
@@ -29,6 +24,9 @@ import androidx.datastore.preferences.preferencesDataStore
         val GLASS_SIZE = intPreferencesKey("GLASS_SIZE")
         val GLASS_IMG = intPreferencesKey("GLASS_IMG")
         val TAKEN_WATER_VALUE = intPreferencesKey("TAKEN_WATER_VALUE")
+        val CURRENT_TIME_STAMP = longPreferencesKey("CURRENT_TIME_STAMP")
+
+        val REFRESH_DATE_DAILY = booleanPreferencesKey("REFRESH_DATE_DAILY")
 
     }
 

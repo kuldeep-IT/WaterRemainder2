@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="waterVM"
+            type="com.example.waterremainder.model.WaterData" />
     </data>
 
     <LinearLayout
@@ -28,7 +30,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:lottie_autoPlay="true"
-                app:lottie_loop="true"
+                app:lottie_loop="false"
                 app:lottie_rawRes="@raw/history_water" />
 
             <TextView
@@ -36,7 +38,7 @@
                 android:layout_width="140dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="16dp"
-                android:hint="200 ml"
+                android:text="@{waterVM.glassSize.toString()+` ml`}"
                 android:textSize="24sp"
                 android:fontFamily="@font/montserrat_semibold"
                 android:textColor="@color/gray"
@@ -47,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="16dp"
-                android:hint="21 : 43 PM"
+                android:hint="@{waterVM.time.toString()}"
                 android:textSize="24sp"
                 android:fontFamily="@font/montserrat_semibold"
                 android:textColor="@color/gray"
@@ -62,7 +64,6 @@
             android:layout_marginHorizontal="11dp"
             android:background="@drawable/dotted_line"
             android:layerType="software"/>
-
 
     </LinearLayout>
 </layout>
