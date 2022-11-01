@@ -8,15 +8,20 @@ import android.os.Bundle
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.waterremainder.adapter.TabPagerAdapter
 import com.example.waterremainder.databinding.ActivityMainBinding
+import com.example.waterremainder.db.WaterDB
 import com.example.waterremainder.fragments.HistoryFragment
 import com.example.waterremainder.fragments.HomeFragment
 import com.example.waterremainder.fragments.SettingsFragment
+import com.example.waterremainder.repositories.WaterRepo
 import com.example.waterremainder.utils.DataStoreManager
 import com.example.waterremainder.utils.PreferenceKeys
+import com.example.waterremainder.viewmodel.WaterViewModel
+import com.example.waterremainder.viewmodel.WaterVmProv
 import com.example.waterremainder.walkThrough.MainWalkThrough
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -24,6 +29,8 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var sharedPreferences: SharedPreferences
     lateinit var sharedEditor: SharedPreferences.Editor
+
+    lateinit var vm: WaterViewModel
 
     lateinit var dataStoreManager: DataStoreManager
     var isFirstRun: Boolean = false
@@ -36,6 +43,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        val repo = WaterRepo(WaterDB(this))
+        val viewModelProviderFactory = WaterVmProv(repo)
+        vm =  ViewModelProvider(this,viewModelProviderFactory).get(WaterViewModel::class.java)
 
         sharedPreferences = getPreferences(Context.MODE_PRIVATE)
         sharedEditor = sharedPreferences.edit()

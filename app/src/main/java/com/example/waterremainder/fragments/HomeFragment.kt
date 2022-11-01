@@ -11,16 +11,22 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.waterremainder.MainActivity
 import com.example.waterremainder.R
 import com.example.waterremainder.adapter.DialogBottleAdapter
 import com.example.waterremainder.databinding.FragmentHomeBinding
+import com.example.waterremainder.db.WaterDB
 import com.example.waterremainder.model.BottleSizeData
+import com.example.waterremainder.model.WaterData
+import com.example.waterremainder.repositories.WaterRepo
 import com.example.waterremainder.utils.DataStoreManager
 import com.example.waterremainder.utils.PreferenceKeys.GLASS_SIZE
 import com.example.waterremainder.utils.PreferenceKeys.TAKEN_WATER_VALUE
+import com.example.waterremainder.viewmodel.WaterViewModel
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
@@ -46,7 +52,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     private var mInterstitialAd: InterstitialAd? = null
     private lateinit var bottleAdapter: DialogBottleAdapter
     lateinit var dataStoreManager: DataStoreManager
-
+    lateinit var viewModel: WaterViewModel
     var takenWater = 0
 
     override fun onCreateView(
@@ -56,6 +62,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         dataStoreManager = DataStoreManager(requireActivity())
+
+        viewModel = (activity as MainActivity).vm
 
         dataStoreManager.readIntegerFromDataStore(TAKEN_WATER_VALUE).asLiveData()
             .observe(requireActivity(), {
@@ -218,6 +226,23 @@ class HomeFragment : Fragment(), View.OnClickListener {
                     })
 
                 takenWater = takenWater + glassSizeValue
+
+                var waterData = WaterData(
+                    id = System.currentTimeMillis(),
+                    glassSize = glassSizeValue,
+                    time = System.currentTimeMillis(),
+                    takenWater = takenWater
+                )
+
+                viewModel.addWater(waterData)
+//                Log.d("GET_STORED_DATA", viewModel.getAllWater.toString() )
+
+                viewModel.getAllWater.observe(requireActivity(), Observer{ list ->
+                    list.let {
+                        Log.d("GET_STORED_DATA", it.toString() )
+                    }
+                })
+
                 binding.tvTakenDrink.setText(takenWater.toString())
                 CoroutineScope(Dispatchers.IO).launch {
                     dataStoreManager.saveIntToDataStore(TAKEN_WATER_VALUE, takenWater)

@@ -14,4 +14,5 @@ data class WaterData(
 
     var time: Long?,
 
+    var takenWater : Int?
 ):Serializable
