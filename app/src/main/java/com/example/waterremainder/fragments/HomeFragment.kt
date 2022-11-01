@@ -269,7 +269,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
 //                   dataStoreManager.saveIntToDataStore(GLASS_IMG, bottleSizeData.imageBottle)
                 }
                 Log.d("LIFECYCL_E_BEFORE", lifecycle.toString())
+                showUpdatedGlass(bottleSizeData.size)
                 dialog.dismiss()
+
+
                 Log.d("LIFECYCL_E_AFTER", lifecycle.toString())
 
             }
@@ -278,15 +281,15 @@ class HomeFragment : Fragment(), View.OnClickListener {
         dialog.show()
     }
 
-    private fun showUpdatedGlass() {
+    private fun showUpdatedGlass(size: Int) {
 
-        var glassSizeValue = 0
-        dataStoreManager.readIntegerFromDataStore(GLASS_SIZE).asLiveData()
+        /*var glassSizeValue = size*/
+        /*dataStoreManager.readIntegerFromDataStore(GLASS_SIZE).asLiveData()
             .observe(requireActivity(), {
                 glassSizeValue = it
-            })
+            })*/
 
-        when (glassSizeValue) {
+        when (size) {
             50 -> binding.ivGlass.setImageDrawable(
                 ContextCompat.getDrawable(
                     requireActivity(),

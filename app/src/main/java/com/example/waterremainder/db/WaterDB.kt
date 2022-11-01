@@ -14,7 +14,7 @@ abstract class WaterDB : RoomDatabase() {
 
     abstract fun getAllWaterDao(): WaterDao
 
-    companion object{
+    companion object {
 
         @Volatile
         private var instance: WaterDB? = null
