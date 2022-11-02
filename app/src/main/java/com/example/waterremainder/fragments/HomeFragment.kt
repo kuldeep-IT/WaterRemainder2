@@ -46,6 +46,9 @@ private const val ARG_PARAM2 = "param2"
  * Use the [HomeFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+
+//notification: https://stackoverflow.com/questions/44861271/how-to-show-local-notification-every-hour-using-service
+//delegates - updated - https://medium.com/@mobidroid92/hello-delegates-goodby-base-classes-c8aeedc2b855
 class HomeFragment : Fragment(), View.OnClickListener {
 
     lateinit var binding: FragmentHomeBinding
@@ -102,10 +105,6 @@ class HomeFragment : Fragment(), View.OnClickListener {
                     }
                 }
             }
-
-
-
-
 
         loadBannerAd()
         loadInterAd()
@@ -248,13 +247,13 @@ class HomeFragment : Fragment(), View.OnClickListener {
             R.id.add_fab -> {
                 var glassSizeValue = 0
                 dataStoreManager.readIntegerFromDataStore(GLASS_SIZE).asLiveData()
-                    .observe(requireActivity(), {
+                    .observe(requireActivity()) {
                         if (it == -1) {
                             glassSizeValue = 50
                         } else {
                             glassSizeValue = it
                         }
-                    })
+                    }
 
                 takenWater = takenWater + glassSizeValue
 
@@ -274,9 +273,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
                     }
                 })
 
-                binding.tvTakenDrink.setText(takenWater.toString())
+                binding.tvTakenDrink.setText(waterData.takenWater.toString())
                 CoroutineScope(Dispatchers.IO).launch {
-                    dataStoreManager.saveIntToDataStore(TAKEN_WATER_VALUE, takenWater)
+                    dataStoreManager.saveIntToDataStore(TAKEN_WATER_VALUE, waterData.takenWater!!)
                 }
             }
         }
