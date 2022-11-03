@@ -9,8 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.waterremainder.MainActivity
+import com.example.waterremainder.adapter.FilterDataAdapter
 import com.example.waterremainder.adapter.WaterHistoryListAdapter
 import com.example.waterremainder.databinding.FragmentHistoryBinding
+import com.example.waterremainder.model.FilteredClass
 import com.example.waterremainder.model.WaterData
 import com.example.waterremainder.viewmodel.WaterViewModel
 import com.google.gson.Gson
@@ -33,6 +35,8 @@ class HistoryFragment : Fragment() {
     lateinit var binding: FragmentHistoryBinding
     lateinit var viewModel: WaterViewModel
     lateinit var waterHistoryAdapter: WaterHistoryListAdapter
+    lateinit var filterAdapter: FilterDataAdapter
+    var listFinal: ArrayList<FilteredClass> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,12 +47,23 @@ class HistoryFragment : Fragment() {
         binding = FragmentHistoryBinding.inflate(inflater, container, false)
 
         viewModel = (activity as MainActivity).vm
-        setUpRV()
+//        setUpRV()
+        setUpFilterRV()
+
 
         viewModel.getAllWater.observe(requireActivity(), Observer{list ->
             list?.let {
 
-                waterHistoryAdapter.differ.submitList(sortArrayByDate(list).toList())
+                for ((k, v) in sortArrayByDate(list)) {
+                    val filteredClass = FilteredClass()
+                    filteredClass.date = k
+                    filteredClass.listWaterData =v
+                    listFinal.add(filteredClass)
+                }
+
+                Log.d("FINAL_LIST", "onCreateView: "+Gson().toJson(listFinal))
+
+                filterAdapter.differ.submitList(listFinal)
 
             }
         })
@@ -83,10 +98,18 @@ class HistoryFragment : Fragment() {
     }
 
 
-    fun setUpRV() {
+    /*fun setUpRV() {
         waterHistoryAdapter = WaterHistoryListAdapter()
         binding.recyclerView.apply {
             adapter = waterHistoryAdapter
+            layoutManager = LinearLayoutManager(requireActivity())
+        }
+    }*/
+
+    fun setUpFilterRV() {
+        filterAdapter = FilterDataAdapter()
+        binding.recyclerView.apply {
+            adapter = filterAdapter
             layoutManager = LinearLayoutManager(requireActivity())
         }
     }
