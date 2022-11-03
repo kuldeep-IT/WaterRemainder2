@@ -1,6 +1,7 @@
 package com.example.waterremainder.fragments
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.ContextThemeWrapper
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -31,9 +33,11 @@ import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -73,6 +77,14 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
         refreshDaily = Utils.currentDate()
         Log.d("refreshDaily", "onCreateView: " + refreshDaily)
+
+        viewModel.getAllWater.observe(requireActivity(), Observer { list ->
+            Log.d("GET_WATER_LIST", "onCreateView: "+list)
+
+          var abc = sortArrayByDate(list)
+            Log.d("GET_WATER_LIST_ABC", "onCreateView: " + Gson().toJson(abc))
+        })
+
 
         dataStoreManager.readLongFromDataStore(CURRENT_TIME_STAMP).asLiveData()
             .observe(requireActivity()) { it ->
@@ -116,6 +128,25 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
 
         return binding.root
+    }
+
+    fun sortArrayByDate(list: List<WaterData>) : HashMap<String, MutableList<WaterData>>{
+        var sortedList= HashMap<String, MutableList<WaterData>>() // create hashmap to store data
+        var temp: MutableList<WaterData>? = ArrayList<WaterData>()
+        for (item in list!!) {
+            temp = sortedList?.get(item.valueOfTheDay) // get date and remove timing
+
+            if (temp != null)     //if this is not null it mean this contain items
+                temp.add(item)
+            else {
+                temp = ArrayList<WaterData>()  //if this is null it means this is new data or new data
+                temp.add(item)
+            }
+
+            sortedList?.put(item.valueOfTheDay!!, temp)
+        }
+
+        return sortedList
     }
 
 
@@ -234,6 +265,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.ivbAds -> {
@@ -261,7 +293,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
                     id = System.currentTimeMillis(),
                     glassSize = glassSizeValue,
                     time = Utils.convertTime(System.currentTimeMillis()),
-                    takenWater = takenWater
+                    takenWater = takenWater,
+                    valueOfTheDay = Utils.currentDateString()
                 )
 
                 viewModel.addWater(waterData)

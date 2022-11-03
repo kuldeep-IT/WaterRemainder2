@@ -1,6 +1,7 @@
 package com.example.waterremainder.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.waterremainder.MainActivity
 import com.example.waterremainder.adapter.WaterHistoryListAdapter
 import com.example.waterremainder.databinding.FragmentHistoryBinding
+import com.example.waterremainder.model.WaterData
 import com.example.waterremainder.viewmodel.WaterViewModel
+import com.google.gson.Gson
+import java.util.ArrayList
+import java.util.HashMap
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,15 +44,44 @@ class HistoryFragment : Fragment() {
 
         viewModel = (activity as MainActivity).vm
         setUpRV()
+
         viewModel.getAllWater.observe(requireActivity(), Observer{list ->
             list?.let {
-                waterHistoryAdapter.differ.submitList(it)
+
+                waterHistoryAdapter.differ.submitList(sortArrayByDate(list).toList())
 
             }
         })
 
+        /*viewModel.getAllWater.observe(requireActivity(), Observer { list ->
+            Log.d("GET_WATER_LIST", "onCreateView: "+list)
+
+            var abc = sortArrayByDate(list)
+            Log.d("GET_WATER_LIST_ABC", "onCreateView: " + Gson().toJson(abc))
+        })*/
+
         return binding.root
     }
+
+    fun sortArrayByDate(list: List<WaterData>) : HashMap<String, MutableList<WaterData>> {
+        var sortedList= HashMap<String, MutableList<WaterData>>() // create hashmap to store data
+        var temp: MutableList<WaterData>? = ArrayList<WaterData>()
+        for (item in list!!) {
+            temp = sortedList?.get(item.valueOfTheDay) // get date and remove timing
+
+            if (temp != null)     //if this is not null it mean this contain items
+                temp.add(item)
+            else {
+                temp = ArrayList<WaterData>()  //if this is null it means this is new data or new data
+                temp.add(item)
+            }
+
+            sortedList?.put(item.valueOfTheDay!!, temp)
+        }
+
+        return sortedList
+    }
+
 
     fun setUpRV() {
         waterHistoryAdapter = WaterHistoryListAdapter()

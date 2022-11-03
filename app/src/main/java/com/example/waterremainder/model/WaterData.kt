@@ -14,5 +14,7 @@ data class WaterData(
 
     var time: String?,
 
-    var takenWater : Int?
+    var takenWater : Int?,
+
+    var valueOfTheDay: String?
 ):Serializable

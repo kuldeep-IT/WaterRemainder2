@@ -1,8 +1,12 @@
 package com.example.waterremainder.utils
 
+import android.os.Build
 import android.view.View
+import androidx.annotation.RequiresApi
 import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class Utils {
@@ -25,6 +29,16 @@ class Utils {
         fun currentDate(): String{
             return SimpleDateFormat("dd-MMM-yyyy", Locale.getDefault())
                 .format(Date())
+        }
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun currentDateString(): String {
+            val current = LocalDateTime.now()
+
+            val formatter = DateTimeFormatter.BASIC_ISO_DATE
+            val formatted = current.format(formatter)
+
+            return formatted
         }
 
     }
