@@ -1,5 +1,7 @@
 package com.example.waterremainder.model
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
@@ -12,7 +14,8 @@ class FilteredClass : Serializable {
 
     @SerializedName("filteredClass")
     @Expose
-    var listWaterData: MutableList<WaterData>? = null
+    var listWaterData: MutableLiveData<List<WaterData>> = MutableLiveData<List<WaterData>>(
+        arrayListOf())
 
     @SerializedName("date")
     @Expose

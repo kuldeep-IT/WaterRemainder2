@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.ObservableField
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -54,18 +55,21 @@ class HistoryFragment : Fragment() {
         viewModel.getAllWater.observe(requireActivity(), Observer{list ->
             list?.let {
 
-                for ((k, v) in sortArrayByDate(list)) {
+                for ((k, v) in sortArrayByDate(it)) {
                     val filteredClass = FilteredClass()
                     filteredClass.date = k
-                    filteredClass.listWaterData =v
+                    filteredClass.listWaterData?.value =v
                     listFinal.add(filteredClass)
                 }
 
                 Log.d("FINAL_LIST", "onCreateView: "+ Gson().toJson(listFinal))
+                //verified list - success
+//                val finalImmuList: List<FilteredClass> = listFinal
 
                 filterAdapter.differ.submitList(listFinal)
-
             }
+//            filterAdapter.differ.submitList(listFinal)
+
         })
 
         /*viewModel.getAllWater.observe(requireActivity(), Observer { list ->
