@@ -61,7 +61,7 @@ class HistoryFragment : Fragment() {
                     listFinal.add(filteredClass)
                 }
 
-                Log.d("FINAL_LIST", "onCreateView: "+Gson().toJson(listFinal))
+                Log.d("FINAL_LIST", "onCreateView: "+ Gson().toJson(listFinal))
 
                 filterAdapter.differ.submitList(listFinal)
 

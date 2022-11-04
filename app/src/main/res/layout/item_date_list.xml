@@ -40,7 +40,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/listData"/>
+            android:id="@+id/listRV"/>
 
         <View
             android:layout_width="match_parent"

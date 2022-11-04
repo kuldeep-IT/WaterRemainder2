@@ -104,14 +104,14 @@ class HomeFragment : Fragment(), View.OnClickListener {
                         binding.tvTakenDrink.setText(takenWater.toString())
                     } else {
                         dataStoreManager.readIntegerFromDataStore(TAKEN_WATER_VALUE).asLiveData()
-                            .observe(requireActivity(), {
+                            .observe(requireActivity()) {
 
                                 if (it == -1) {
                                     takenWater = 0
                                 } else {
                                     takenWater = it
                                 }
-                            })
+                            }
 
                         binding.tvTakenDrink.setText(takenWater.toString())
                     }

@@ -1,10 +1,12 @@
 package com.example.waterremainder.adapter
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.waterremainder.databinding.ItemDateListBinding
 import com.example.waterremainder.databinding.ItemWaterHistoryBinding
@@ -13,12 +15,27 @@ import com.example.waterremainder.model.WaterData
 
 class FilterDataAdapter: RecyclerView.Adapter<FilterDataAdapter.FilterVH>()  {
 
+    lateinit var waterHistoryListAdapter: WaterHistoryListAdapter
+    lateinit var context: Context
+
+    init {
+        waterHistoryListAdapter = WaterHistoryListAdapter()
+    }
+
     inner class FilterVH(val mBinding: ItemDateListBinding) :
         BaseViewHolder(mBinding.root) {
         override fun onBind(position: Int) {
             val filterData = differ.currentList[position]
 //            mBinding.listData = filterData.listWaterData
             mBinding.tvDate.text = filterData.date
+
+            mBinding.listRV.apply {
+                adapter = waterHistoryListAdapter
+                layoutManager = LinearLayoutManager(context)
+            }
+
+            waterHistoryListAdapter.differ.submitList(filterData.listWaterData)
+
             mBinding.executePendingBindings()
         }
 
@@ -28,8 +45,6 @@ class FilterDataAdapter: RecyclerView.Adapter<FilterDataAdapter.FilterVH>()  {
         override fun areItemsTheSame(oldItem: FilteredClass, newItem: FilteredClass): Boolean {
             return oldItem.id == newItem.id
         }
-
-        @SuppressLint("DiffUtilEquals")
         override fun areContentsTheSame(oldItem: FilteredClass, newItem: FilteredClass): Boolean {
             return oldItem == newItem
         }
@@ -54,6 +69,20 @@ class FilterDataAdapter: RecyclerView.Adapter<FilterDataAdapter.FilterVH>()  {
 
     override fun getItemCount(): Int {
         return differ.currentList.size
+    }
+
+    fun setUpWaterHistoryRV(){
+        waterHistoryListAdapter = WaterHistoryListAdapter()
+        waterHistoryListAdapter.apply {
+
+        }
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+
+        context = recyclerView.context
+
     }
 
 }
