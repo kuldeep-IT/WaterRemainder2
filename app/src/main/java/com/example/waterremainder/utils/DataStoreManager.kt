@@ -1,6 +1,7 @@
 package com.example.waterremainder.utils
 
 import android.content.Context
+import android.media.RingtoneManager
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
@@ -159,6 +160,15 @@ class DataStoreManager(val context: Context) {
         }
     }
 
+    suspend fun saveToneUriStringToDataStore(key: Preferences.Key<String>, name: String =  RingtoneManager.getDefaultUri(
+        RingtoneManager.TYPE_NOTIFICATION
+    ).toString()) {
+        context.myDataStore.edit { preferences ->
+            preferences[key] = name
+        }
+    }
+
+
     suspend fun saveBooleanToDataStore(key: Preferences.Key<Boolean>, isChecked: Boolean = false) {
         context.myDataStore.edit { preferences ->
             preferences[key] = isChecked
@@ -182,8 +192,4 @@ class DataStoreManager(val context: Context) {
             preferences[key] = float
         }
     }
-
-
-
-
 }
